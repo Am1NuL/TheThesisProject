@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="thesis" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>com.thesis.model.Account</class>
+
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/thesis" />
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+            <property name="hibernate.connection.username" value="root " />
+            <property name="hibernate.connection.password" value="root" />
+
+            <property name="hibernate.show_sql" value="false" />
+
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+
+            <property name="hibernate.max_fetch_depth" value="3" />
+            <property name="hibernate.default_batch_fetch_size" value="16" />
+            <property name="hibernate.jdbc.batch_size" value="20" />
+            <property name="hibernate.cache.use_second_level_cache" value="false" />
+            <property name="hibernate.generate_statistics" value="false" />
+
+            <property name="hibernate.c3p0.min_size" value="5" />
+            <property name="hibernate.c3p0.max_size" value="2000" />
+            <property name="hibernate.c3p0.timeout" value="300" />
+            <property name="hibernate.c3p0.max_statements" value="5000" />
+            <property name="hibernate.c3p0.idle_test_period" value="3000" />
+        </properties>
+    </persistence-unit>
+</persistence>
