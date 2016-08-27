@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 /**
  * Created by Alex on 18-Aug-16.
@@ -45,5 +46,14 @@ public final class AccountCRUD extends GenericCRUD<Account> {
         query.select(root).where(builder.like(root.<String>get("username"), username));
 
         return getEntityManager().createQuery(query).getSingleResult();
+    }
+
+    public List<Account> findAll() {
+        final CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        final CriteriaQuery<Account> query = builder.createQuery(Account.class);
+        final Root<Account> root = query.from(Account.class);
+        query.select(root);
+
+        return getEntityManager().createQuery(query).getResultList();
     }
 }

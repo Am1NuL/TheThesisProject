@@ -1,5 +1,6 @@
 package com.thesis.controller;
 
+import com.thesis.facade.AccountFacade;
 import com.thesis.model.Account;
 
 import javax.enterprise.context.SessionScoped;
@@ -7,6 +8,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Alex on 21-Aug-16.
@@ -17,6 +19,8 @@ public class UserBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Account user;
+    private List<Account> users;
+    private AccountFacade accountFacade;
 
     public boolean isAdmin() {
         return user.isAdmin();
@@ -42,4 +46,22 @@ public class UserBean implements Serializable {
     public void setUser(Account user) {
         this.user = user;
     }
+
+    public AccountFacade getAccountFacade() {
+        if(accountFacade == null) {
+            accountFacade = new AccountFacade();
+        }
+
+        return accountFacade;
+    }
+
+    public List<Account> getAllAccounts() {
+        if(users == null) {
+            loadUsers();
+        }
+
+        return users;
+    }
+
+    public void loadUsers() { users =  getAccountFacade().listAll(); }
 }

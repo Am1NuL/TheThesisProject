@@ -35,6 +35,12 @@ public final class DAO {
     private AccountCRUD accountCRUD;
 
     /**
+     * The FileCRUD that will be used to Create, Read, Update and Delete
+     * persons.
+     */
+    private FileCRUD fileCRUD;
+
+    /**
      * A getter for the AccountRUD field. If there isn't one a PersonCRUD is
      * created.
      *
@@ -45,6 +51,23 @@ public final class DAO {
             this.accountCRUD = new AccountCRUD(em);
         }
         return this.accountCRUD;
+    }
+
+    /**
+     * A getter for the fileCRUD field. If there isn't one a PersonCRUD is
+     * created.
+     *
+     * @return Returns the fileCRUD field.
+     */
+    public FileCRUD getFileCRUD() {
+        if (this.fileCRUD == null) {
+            this.fileCRUD = new FileCRUD(em);
+        }
+        return this.fileCRUD;
+    }
+
+    public void closeTransaction() {
+        this.em.close();
     }
 
     public void commit() {
