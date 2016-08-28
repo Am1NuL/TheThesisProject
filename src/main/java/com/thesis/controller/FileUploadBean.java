@@ -1,6 +1,5 @@
 package com.thesis.controller;
 
-import com.thesis.crud.DAO;
 import com.thesis.crud.PersistException;
 import com.thesis.facade.FileFacade;
 import com.thesis.model.File;
@@ -21,27 +20,27 @@ public class FileUploadBean extends AbstractBean implements Serializable {
     private FileFacade fileFacade;
     private UploadedFile uploadedFile;
     private File file;
-    private byte[] fileData;
 
+    public FileFacade getFileFacade() {
+        if(fileFacade == null) {
+            fileFacade = new FileFacade();
+        }
+
+        return fileFacade;
+    }
 
     public void fileUploadListener(FileUploadEvent e) throws IOException, PersistException {
         this.uploadedFile = e.getFile();
 
         String filename = FilenameUtils.getName(uploadedFile.getFileName());
-        fileData = new byte[(int)uploadedFile.getSize()];
-        DataInputStream dataInputStream = new DataInputStream(uploadedFile.getInputstream());
-        dataInputStream.readFully(fileData);
 
         file = new File();
         file.setFileName(filename);
-        file.setData(fileData);
+        file.setData(uploadedFile.getContents());
 
-        fileFacade = new FileFacade();
-        fileFacade.upload(file);
+        getFileFacade().upload(file);
 
-        System.out.println("File Name: " + e.getFile().getFileName() + "File Size: " + e.getFile().getSize());
+        System.out.println("File Name: " + e.getFile().getFileName() + " File Size: " + e.getFile().getSize());
         displayInfoMessageToUser("File Uploaded Successfully !");
-
-
     }
 }

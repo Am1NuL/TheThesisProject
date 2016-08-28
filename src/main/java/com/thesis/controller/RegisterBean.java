@@ -19,6 +19,7 @@ public class RegisterBean extends AbstractBean{
     private String confirmPassword;
     private String email;
     private Account user;
+    private AccountFacade accountFacade;
 
     public String getUsername() {
         return username;
@@ -52,16 +53,22 @@ public class RegisterBean extends AbstractBean{
         this.email = email;
     }
 
-    public String register() throws PersistException {
-        AccountFacade accountFacade = new AccountFacade();
+    public AccountFacade getAccountFacade() {
+        if(accountFacade == null) {
+            accountFacade = new AccountFacade();
+        }
 
+        return accountFacade;
+    }
+
+    public String register() throws PersistException {
         try {
-            user = accountFacade.isInfoUnique(username, email);
+            user = getAccountFacade().isInfoUnique(username, email);
         }catch (NoResultException e) {
         }
 
         if(user == null && password.equals(confirmPassword)) {
-            accountFacade.createAccount(username, password, email);
+            getAccountFacade().createAccount(username, password, email);
             displayInfoMessageToUser("Registration is successful");
             return "/pages/public/login.xhtml";
         }

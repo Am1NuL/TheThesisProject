@@ -13,8 +13,8 @@ import java.util.List;
 /**
  * Created by Alex on 21-Aug-16.
  */
-@SessionScoped
 @Named("userBean")
+@SessionScoped
 public class UserBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -22,9 +22,8 @@ public class UserBean implements Serializable {
     private List<Account> users;
     private AccountFacade accountFacade;
 
-    public boolean isAdmin() {
-        return user.isAdmin();
-    }
+    //TODO: accessDenied
+    public boolean isAdmin() { return user.isAdmin(); }
 
     public boolean isDefaultUser() {
         return user.isUser();

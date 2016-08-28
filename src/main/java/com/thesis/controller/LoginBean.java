@@ -23,6 +23,7 @@ public class LoginBean extends AbstractBean{
     private String password;
 
     private Account user;
+    private AccountFacade accountFacade;
 
     public String getUsername() {
         return username;
@@ -40,11 +41,17 @@ public class LoginBean extends AbstractBean{
         this.password = password;
     }
 
-    public String login() {
-        AccountFacade accountFacade = new AccountFacade();
+    public AccountFacade getAccountFacade() {
+        if(accountFacade == null) {
+            accountFacade = new AccountFacade();
+        }
 
+        return accountFacade;
+    }
+
+    public String login() {
         try {
-            user = accountFacade.isValidLogin(username, password);
+            user = getAccountFacade().isValidLogin(username, password);
         }catch (NoResultException e) {
         }
 

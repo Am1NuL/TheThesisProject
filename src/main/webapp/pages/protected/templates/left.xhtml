@@ -15,6 +15,8 @@
 			<br />
 			<p:commandButton styleClass="menuButton" icon="ui-icon-arrowstop-1-e" rendered="#{userBean.admin or userBean.defaultUser}" action="/pages/protected/defaultUser/files/fileUpload" value="UPLOAD" ajax="false" immediate="true" />
 			<br />
+			<p:commandButton styleClass="menuButton" icon="ui-icon-arrowstop-1-e" rendered="#{userBean.admin or userBean.defaultUser}" action="/pages/protected/defaultUser/files/fileDownload" value="DOWNLOAD" ajax="false" immediate="true" />
+
 		</h:form>
 	</ui:composition>
 </h:body>
