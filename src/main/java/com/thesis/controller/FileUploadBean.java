@@ -30,17 +30,21 @@ public class FileUploadBean extends AbstractBean implements Serializable {
     }
 
     public void fileUploadListener(FileUploadEvent e) throws IOException, PersistException {
-        this.uploadedFile = e.getFile();
+        try{
+            this.uploadedFile = e.getFile();
 
-        String filename = FilenameUtils.getName(uploadedFile.getFileName());
+            String filename = FilenameUtils.getName(uploadedFile.getFileName());
 
-        file = new File();
-        file.setFileName(filename);
-        file.setData(uploadedFile.getContents());
+            file = new File();
+            file.setFileName(filename);
+            file.setData(uploadedFile.getContents());
 
-        getFileFacade().upload(file);
+            getFileFacade().upload(file);
 
-        System.out.println("File Name: " + e.getFile().getFileName() + " File Size: " + e.getFile().getSize());
-        displayInfoMessageToUser("File Uploaded Successfully !");
+            System.out.println("File Name: " + e.getFile().getFileName() + " File Size: " + e.getFile().getSize());
+            displayInfoMessageToUser("File Uploaded Successfully!");
+        }catch (Exception ex) {
+
+        }
     }
 }

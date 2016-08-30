@@ -4,7 +4,9 @@ import com.thesis.crud.DAO;
 import com.thesis.crud.PersistException;
 import com.thesis.model.Account;
 
+import javax.faces.context.FacesContext;
 import javax.persistence.NoResultException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -14,20 +16,22 @@ public class AccountFacade {
     public Account isValidLogin(String username, String password) throws NoResultException{
         DAO dao = new DAO();
         Account user = dao.getAccountCRUD().findUserByUsername(username);
+        dao.closeTransaction();
 
         if(user == null || !user.getPassword().equals(password)) {
             return null;
         }
 
-        dao.closeTransaction();
         return user;
     }
 
     public Account isInfoUnique(String username, String email) throws NoResultException{
         DAO dao = new DAO();
         Account emailCheck = dao.getAccountCRUD().findUserByEmail(email);
-        Account usernameCheck = dao.getAccountCRUD().findUserByUsername(username);
+        dao.closeTransaction();
 
+        dao = new DAO();
+        Account usernameCheck = dao.getAccountCRUD().findUserByUsername(username);
         dao.closeTransaction();
         return null;
 
@@ -53,6 +57,12 @@ public class AccountFacade {
         List<Account> result = dao.getAccountCRUD().findAll();
         dao.closeTransaction();
         return result;
+    }
+
+    public static Account getCurrentUser() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        return (Account) request.getSession().getAttribute("user");
     }
 
     /*public void updatePassword(User user, String oldPassword, String newPassword) {

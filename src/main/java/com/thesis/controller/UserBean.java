@@ -21,6 +21,7 @@ public class UserBean implements Serializable {
     private Account user;
     private List<Account> users;
     private AccountFacade accountFacade;
+    private String selectedUser;
 
     //TODO: accessDenied
     public boolean isAdmin() { return user.isAdmin(); }
@@ -63,4 +64,12 @@ public class UserBean implements Serializable {
     }
 
     public void loadUsers() { users =  getAccountFacade().listAll(); }
+
+    public String getSelectedUser() {
+        return selectedUser;
+    }
+
+    public void setSelectedUser(String selectedUser) {
+        this.selectedUser = selectedUser;
+    }
 }

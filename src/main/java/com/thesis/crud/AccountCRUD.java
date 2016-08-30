@@ -1,12 +1,15 @@
 package com.thesis.crud;
 
 import com.thesis.model.Account;
+import com.thesis.model.File;
+import org.slf4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Alex on 18-Aug-16.
@@ -18,8 +21,8 @@ public final class AccountCRUD extends GenericCRUD<Account> {
      * @param entityManager
      *            Entity manager to be used for the transactions.
      */
-    public AccountCRUD(final EntityManager entityManager) {
-        super(entityManager, Account.class);
+    public AccountCRUD(final EntityManager entityManager, final Logger logger) {
+        super(entityManager, logger, Account.class);
     }
 
     public Account findUserByEmail(String email) {

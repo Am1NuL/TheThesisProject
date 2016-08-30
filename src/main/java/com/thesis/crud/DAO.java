@@ -1,5 +1,8 @@
 package com.thesis.crud;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -13,6 +16,11 @@ public final class DAO {
      */
     private static final EntityManagerFactory EMF = Persistence
             .createEntityManagerFactory("thesis");
+
+    /**
+     * The logger that will log all the operations in the transaction.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(DAO.class);
 
     /**
      * The entity manager that will be used to control the entities.
@@ -41,6 +49,12 @@ public final class DAO {
     private FileCRUD fileCRUD;
 
     /**
+     * The SharedCRUD that will be used to Create, Read, Update and Delete
+     * persons.
+     */
+    private SharedCRUD sharedCRUD;
+
+    /**
      * A getter for the AccountRUD field. If there isn't one a PersonCRUD is
      * created.
      *
@@ -48,7 +62,7 @@ public final class DAO {
      */
     public AccountCRUD getAccountCRUD() {
         if (this.accountCRUD == null) {
-            this.accountCRUD = new AccountCRUD(em);
+            this.accountCRUD = new AccountCRUD(em, LOGGER);
         }
         return this.accountCRUD;
     }
@@ -61,9 +75,16 @@ public final class DAO {
      */
     public FileCRUD getFileCRUD() {
         if (this.fileCRUD == null) {
-            this.fileCRUD = new FileCRUD(em);
+            this.fileCRUD = new FileCRUD(em, LOGGER);
         }
         return this.fileCRUD;
+    }
+
+    public SharedCRUD getSharedCRUD() {
+        if (this.sharedCRUD == null) {
+            this.sharedCRUD = new SharedCRUD(em, LOGGER);
+        }
+        return this.sharedCRUD;
     }
 
     public void closeTransaction() {

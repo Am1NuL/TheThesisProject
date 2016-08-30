@@ -1,7 +1,57 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
 <h:body>
-    #{bundle.welcomeMessage} :
+    <ui:composition template="/pages/protected/templates/master.xhtml">
+        <ui:define name="divMain">
+            <h:form id="fileForm">
+                <p:dataTable id="fileTable" value="#{fileBean.allFilesByUser}" var="file" emptyMessage="#{bundle.noRecords}" paginator="true" rows="10"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="FileName" />
+                        </f:facet>
+
+                        <h:outputText value="#{file.fileName}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Share" />
+                        </f:facet>
+
+                        <p:commandButton value="Share" icon="ui-icon-trash" onclick="PF('shareFileDialogWidget').show()" >
+                            <f:setPropertyActionListener target="#{fileBean.currentFileId}" value="#{file.fileId}" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+
+            <p:dialog widgetVar="shareFileDialogWidget"
+                      id="shareFileDialogId" height="150" width="500" modal="true"
+                      closable="true" draggable="false" resizable="false" showEffect="explode" hideEffect="bounce">
+                <p:ajax event="close" update=":fileForm:fileTable" />
+                <h:form id="shareFileDialogForm" prependId="false">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="user" value="User: " />
+                        <p:selectOneMenu id="user" style="width:150px" effect="fold" value="#{userBean.selectedUser}">
+                            <!--<f:selectItem itemLabel="Select User" itemValue="" noSelectionOption="true" />-->
+                            <f:selectItems value="#{userBean.allAccounts}" var="acc" itemLabel="#{acc.username}" itemValue="#{acc.accId}"/>
+                        </p:selectOneMenu>
+
+                        <p:commandButton value="#{bundle.share}" icon="ui-icon-plus"
+                                         action="#{fileBean.shareFile(userBean.selectedUser)}"
+                                         oncomplete="PF('shareFileDialogWidget').hide()"
+                        ajax="false"/>
+                        <p:commandButton value="#{bundle.cancel}" icon="ui-icon-cancel"
+                                         onclick="PF('shareFileDialogWidget').hide();" type="button"/>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+            <!--<ui:include src="/pages/protected/defaultUser/dialogs/shareFile.xhtml" />-->
+        </ui:define>
+    </ui:composition>
 </h:body>
 </html>

@@ -1,9 +1,8 @@
 package com.thesis.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -22,6 +21,9 @@ public class File {
 
     @Column(name = "FILE_DATA")
     private byte[] data;
+
+    @ManyToMany(mappedBy = "fileList", cascade = CascadeType.ALL)
+    private Set<Account> accountList = new HashSet<Account>();
 
     public UUID getFileId() {
         return fileId;
@@ -45,5 +47,25 @@ public class File {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public void addUser(Account toAdd) {
+        this.accountList.add(toAdd);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        File file = (File) o;
+
+        return !(fileId != null ? !fileId.equals(file.fileId) : file.fileId != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return fileId != null ? fileId.hashCode() : 0;
     }
 }

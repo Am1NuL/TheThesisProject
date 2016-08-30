@@ -1,6 +1,9 @@
 package com.thesis.model;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -24,6 +27,11 @@ public class Account {
 
     @Column(name = "EMAIL")
     private String email;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "account_file", joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "FILE_ID"))
+    private Set<File> fileList = new HashSet<File>();
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -77,6 +85,14 @@ public class Account {
         this.email = email;
     }
 
+    public Set<File> getFileList() {
+        return Collections.unmodifiableSet(this.fileList);
+    }
+
+    public void addFile(File toAdd) {
+        this.fileList.add(toAdd);
+    }
+
     public Role getRole() {
         return role;
     }
@@ -101,7 +117,6 @@ public class Account {
         Account account = (Account) o;
 
         return !(accId != null ? !accId.equals(account.accId) : account.accId != null);
-
     }
 
     @Override

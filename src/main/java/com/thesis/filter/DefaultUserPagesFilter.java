@@ -21,7 +21,7 @@ public class DefaultUserPagesFilter extends AbstractFilter implements Filter {
         Account user = (Account) req.getSession(true).getAttribute("user");
 
         if(user == null || !user.isUser() && !user.isAdmin()){
-            accessDenied(request, response, req);
+            doLogin(request, response, req);
             return;
         }
 

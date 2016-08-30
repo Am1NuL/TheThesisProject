@@ -10,9 +10,10 @@
     <title>ASDASdasdasdas</title>
 </h:head>
 <h:body>
-    <h:form enctype="multipart/form-data" style="width: 140px">
+    <p:outputLabel value="Max File Size = 3.8mb"/>
+    <h:form enctype="multipart/form-data" style="width: 500px">
         <p:fileUpload fileUploadListener="#{fileUpload.fileUploadListener}" mode="advanced" dragDropSupport="true"
-                      update="messages" sizeLimit="100000" auto="true"/>
+                      update="messages" sizeLimit="4000000" auto="true"/>
 
         <p:growl id="messages" showDetail="true" />
     </h:form>
