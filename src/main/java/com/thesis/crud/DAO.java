@@ -1,8 +1,5 @@
 package com.thesis.crud;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -18,17 +15,12 @@ public final class DAO {
             .createEntityManagerFactory("thesis");
 
     /**
-     * The logger that will log all the operations in the transaction.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(DAO.class);
-
-    /**
      * The entity manager that will be used to control the entities.
      */
     private EntityManager em;
 
     /**
-     * A constructor for the DAO class. Begins the transaction adn creates an
+     * A constructor for the DAO class. Begins the transaction and creates an
      * entity manager.
      */
     public DAO() {
@@ -38,51 +30,51 @@ public final class DAO {
 
     /**
      * The AccountCRUD that will be used to Create, Read, Update and Delete
-     * persons.
+     * accounts.
      */
     private AccountCRUD accountCRUD;
 
     /**
      * The FileCRUD that will be used to Create, Read, Update and Delete
-     * persons.
+     * accounts.
      */
     private FileCRUD fileCRUD;
 
     /**
      * The SharedCRUD that will be used to Create, Read, Update and Delete
-     * persons.
+     * accounts.
      */
     private SharedCRUD sharedCRUD;
 
     /**
-     * A getter for the AccountRUD field. If there isn't one a PersonCRUD is
+     * A getter for the AccountRUD field. If there isn't one a AccountCRUD is
      * created.
      *
      * @return Returns the AccountCRUD field.
      */
     public AccountCRUD getAccountCRUD() {
         if (this.accountCRUD == null) {
-            this.accountCRUD = new AccountCRUD(em, LOGGER);
+            this.accountCRUD = new AccountCRUD(em);
         }
         return this.accountCRUD;
     }
 
     /**
-     * A getter for the fileCRUD field. If there isn't one a PersonCRUD is
+     * A getter for the fileCRUD field. If there isn't one a AccountCRUD is
      * created.
      *
      * @return Returns the fileCRUD field.
      */
     public FileCRUD getFileCRUD() {
         if (this.fileCRUD == null) {
-            this.fileCRUD = new FileCRUD(em, LOGGER);
+            this.fileCRUD = new FileCRUD(em);
         }
         return this.fileCRUD;
     }
 
     public SharedCRUD getSharedCRUD() {
         if (this.sharedCRUD == null) {
-            this.sharedCRUD = new SharedCRUD(em, LOGGER);
+            this.sharedCRUD = new SharedCRUD(em);
         }
         return this.sharedCRUD;
     }

@@ -1,7 +1,7 @@
 package com.thesis.controller;
 
 import com.thesis.facade.FileFacade;
-import com.thesis.model.File;
+import com.thesis.entities.File;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -41,7 +41,6 @@ public class FileDownloadBean extends AbstractBean implements Serializable {
 
         InputStream is = new ByteArrayInputStream(file.getData());
         downFile = new DefaultStreamedContent(is, new MimetypesFileTypeMap().getContentType(file.getFileName()) , file.getFileName());
-
         System.out.println("File Name: " + downFile.getName());
         displayInfoMessageToUser("File Downloaded Successfully !");
 

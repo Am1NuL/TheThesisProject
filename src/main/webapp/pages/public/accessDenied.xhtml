@@ -11,8 +11,14 @@
 			<h:form>
 				<h1>#{bundle.accessDeniedHeader}</h1>
 				<br />
-				#{bundle.accessDeniedText}<br />
-				<p:commandButton action="/pages/protected/index.xhtml" value="#{bundle.accessDeniedButton}" ajax="false" immediate="true" />
+				<p:separator/>
+				<h:graphicImage library="images" name="accessDenied.png" />
+				<p:separator/>
+				<br/>
+				<b>#{bundle.accessDeniedText}</b>
+				<br />
+				<br/>
+				<p:commandButton action="/pages/protected/defaultUser/defaultUserIndex.xhtml" value="#{bundle.accessDeniedButton}" ajax="false" immediate="true" />
 			</h:form>
 		</ui:define>
 	</ui:composition>

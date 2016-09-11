@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head >
+    <title>ASDASdasdasdas</title>
+</h:head>
+<h:body >
+    <ui:composition template="/pages/protected/templates/master.xhtml">
+        <ui:define name="divMain">
+            <h:form>
+                <p:inputText value="#{editorBean.editorName}" label="fileName" id="name" required="true" >
+                    <p:watermark for="name" value="File Name" />
+                </p:inputText>
+                <br/>
+                <pe:ckEditor id="editor" value="#{editorBean.content}" width="100%" defaultLanguage="en" toolbar="[['Source','-','NewPage','DocProps','Preview','Print','-','Templates'], [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ],
+        [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ], ['NumberedList','BulletedList','-', 'Outdent','Indent','-','JustifyLeft',
+        'JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ], [ 'Styles','Format','Font','FontSize' ], [ 'TextColor','BGColor' ], [ 'Maximize', 'ShowBlocks']]">
+                    <p:ajax event="save" listener="#{editorBean.saveListener}"/>
+                </pe:ckEditor>
+                <p:commandButton actionListener="#{editorBean.saveListener}" value="Save" ajax="false">
+                    <f:setPropertyActionListener target="#{editorBean.editorName}" value="#{editorBean.editorName}" />
+                </p:commandButton>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

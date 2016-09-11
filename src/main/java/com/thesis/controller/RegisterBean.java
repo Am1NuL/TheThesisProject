@@ -2,11 +2,13 @@ package com.thesis.controller;
 
 import com.thesis.crud.PersistException;
 import com.thesis.facade.AccountFacade;
-import com.thesis.model.Account;
+import com.thesis.entities.Account;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 /**
  * Created by Alex on 21-Aug-16.
@@ -61,7 +63,7 @@ public class RegisterBean extends AbstractBean{
         return accountFacade;
     }
 
-    public String register() throws PersistException {
+    public String register() throws PersistException, InvalidKeySpecException, NoSuchAlgorithmException {
         try {
             user = getAccountFacade().isInfoUnique(username, email);
         }catch (NoResultException e) {

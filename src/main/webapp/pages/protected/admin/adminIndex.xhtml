@@ -4,10 +4,15 @@
 <h:body>
 	<ui:composition template="/pages/protected/templates/master.xhtml">
 		<ui:define name="divMain">
-			<h:form id="dogsForm">
-				<p:dataTable id="dogsTable" value="#{userBean.allAccounts}" var="user" emptyMessage="#{bundle.noRecords}" paginator="true" rows="10"
+			<h:form id="userForm">
+				<p:dataTable id="usersTable" value="#{userBean.allAccounts}" var="user" emptyMessage="#{bundle.noRecords}" reflow="true" paginator="true" rows="10"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">
+						<p:commandButton value="#{bundle.create}" icon="ui-icon-plus" onclick="PF('createDialogWidget').show();" >
+							<f:setPropertyActionListener target="#{userBean.dummyUser}" value="#{user}" />
+						</p:commandButton>
+					</f:facet>
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Name" />
@@ -24,18 +29,90 @@
 						<h:outputText value="#{user.email}" />
 					</p:column>
 
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Role" />
+						</f:facet>
+
+						<h:outputText value="#{user.role}" />
+					</p:column>
+
+					<p:column>
+						<p:commandButton value="#{bundle.update}" icon="ui-icon-pencil" onclick="PF('updateDialogWidget').show();" >
+							<f:setPropertyActionListener target="#{userBean.dummyUser}" value="#{user}" />
+						</p:commandButton>
+
+						<p:commandButton value="#{bundle.delete}" icon="ui-icon-trash" action="#{userBean.deleteUser(user)}" ajax="false"/>
+					</p:column>
 				</p:dataTable>
-				<!--
-				<p:commandButton value="#{bundle.create} #{bundle.dog}" icon="ui-icon-plus" update=":dogCreateDialogForm"
-					actionListener="#{dogMB.resetDog()}" onclick="dogCreateDialogWidget.show();" />
-					-->
 			</h:form>
-			<!--
-			<ui:include src="/pages/protected/admin/dialogs/dogCreateDialog.xhtml" />
-			<ui:include src="/pages/protected/admin/dialogs/dogDetailDialog.xhtml" />
-			<ui:include src="/pages/protected/admin/dialogs/dogUpdateDialog.xhtml" />
-			<ui:include src="/pages/protected/admin/dialogs/dogDeleteDialog.xhtml" />
-			-->
+
+			<!--Update dialog-->
+			<p:dialog widgetVar="updateDialogWidget"
+					  id="updateDialogId" height="150" width="500" modal="true"
+					  closable="true" draggable="true" resizable="false">
+				<h:form id="updateDialogForm" prependId="false">
+					<h:panelGrid columns="2">
+						<h:outputText value="New E-Mail" />
+						<h:inputText value="#{userBean.dummyUser.email}" required="false" label="Email"
+							validatorMessage="Invalid email format">
+
+							<f:validateRegex
+									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</h:inputText>
+
+						<h:outputText value="Role" />
+						<p:selectOneMenu id="role" style="width:150px" effect="fold" value="#{userBean.dummyUser.role}">
+							<f:selectItem itemLabel="Admin" itemValue="ADMIN"/>
+							<f:selectItem itemLabel="User" itemValue="USER"/>
+						</p:selectOneMenu>
+
+						<p:commandButton value="#{bundle.update}" icon="ui-icon-plus"
+										 action="#{userBean.updateUser}"
+										 update=":messageGrowl :userForm:usersTable"
+										 oncomplete="PF('updateDialogWidget').hide()" />
+						<p:commandButton value="#{bundle.cancel}" icon="ui-icon-cancel" actionListener="#{userBean.resetUser()}"
+										 onclick="PF('updateDialogWidget').hide();" type="button" />
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+			<!--Create dialog-->
+			<p:dialog widgetVar="createDialogWidget"
+					  id="createDialogId" height="200" width="500" modal="true"
+					  closable="true" draggable="true" resizable="false">
+				<h:form id="createDialogForm" prependId="false">
+					<p:panelGrid columns="2">
+						<p:outputLabel value="#{bundle.registerUserName}" />
+						<p:inputText value="#{userBean.dummyUser.username}" label="Username" id="username" required="true">
+							<p:watermark for="username" value="Username" />
+						</p:inputText>
+
+						<p:outputLabel value="#{bundle.registerPassword}" />
+						<p:password value="#{userBean.newPass}" label="Password" id="pass" required="true" feedback="true" autocomplete="off" >
+							<f:validateLength minimum="6" />
+							<p:watermark for="pass" value="Password" />
+						</p:password>
+
+						<p:outputLabel value="#{bundle.registerEmail}" />
+						<p:inputText value="#{userBean.dummyUser.email}" label="Email" id="email" required="true"
+									 requiredMessage="Please enter your email address."
+									 validatorMessage="Invalid email format">
+
+							<f:validateRegex
+									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+							<p:watermark for="email" value="Email Address" />
+						</p:inputText>
+
+						<p:commandButton value="#{bundle.create}" icon="ui-icon-plus"
+										 action="#{userBean.createUser}"
+										 update=":messageGrowl :userForm:usersTable"
+										 oncomplete="PF('createDialogWidget').hide()" />
+						<p:commandButton value="#{bundle.cancel}" icon="ui-icon-cancel" actionListener="#{userBean.resetUser()}"
+										 onclick="PF('createDialogWidget').hide();" type="button" />
+					</p:panelGrid>
+				</h:form>
+			</p:dialog>
 		</ui:define>
 	</ui:composition>
 </h:body>

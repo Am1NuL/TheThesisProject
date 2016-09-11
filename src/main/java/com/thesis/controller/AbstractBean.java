@@ -22,16 +22,4 @@ public class AbstractBean {
         JSFMessageUtil messageUtil = new JSFMessageUtil();
         messageUtil.sendInfoMessageToUser(message);
     }
-
-    protected void closeDialog(){
-        getRequestContext().addCallbackParam(KEEP_DIALOG_OPENED, false);
-    }
-
-    protected void keepDialogOpen(){
-        getRequestContext().addCallbackParam(KEEP_DIALOG_OPENED, true);
-    }
-
-    protected RequestContext getRequestContext(){
-        return RequestContext.getCurrentInstance();
-    }
 }

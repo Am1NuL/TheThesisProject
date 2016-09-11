@@ -1,4 +1,4 @@
-package com.thesis.model;
+package com.thesis.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;

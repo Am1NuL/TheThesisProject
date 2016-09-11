@@ -1,7 +1,5 @@
 package com.thesis.crud;
 
-import org.slf4j.Logger;
-
 import javax.persistence.EntityManager;
 import java.util.UUID;
 
@@ -13,11 +11,6 @@ public abstract class GenericCRUD<T> {
      * An entity manager that will handle the operations.
      */
     private EntityManager entityManager;
-
-    /**
-     * The logger that will be used in the CRUD class.
-     */
-    private final Logger logger;
 
     /**
      *
@@ -32,9 +25,8 @@ public abstract class GenericCRUD<T> {
      * @param entityType
      *            class type
      */
-    public GenericCRUD(final EntityManager entityManager, final Logger logger, final Class<?> entityType) {
+    public GenericCRUD(final EntityManager entityManager, final Class<?> entityType) {
         this.setEntityManager(entityManager);
-        this.logger = logger;
         this.entityType = entityType;
     }
 
@@ -87,7 +79,7 @@ public abstract class GenericCRUD<T> {
         private T entity;
 
         /**
-         * Class constructor specifying entity to create.
+         * Class constructor specifying entity to update.
          *
          * @param entity
          *            Entity object to create UpdateCommand object.
@@ -200,7 +192,6 @@ public abstract class GenericCRUD<T> {
             command.execute();
         }
         catch (javax.persistence.PersistenceException e) {
-            logger.error("PersistException", e);
             throw new PersistException("PersistException", e);
         }
     }

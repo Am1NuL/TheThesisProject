@@ -1,7 +1,6 @@
 package com.thesis.crud;
 
-import com.thesis.model.File;
-import org.slf4j.Logger;
+import com.thesis.entities.File;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -20,8 +19,8 @@ public final class FileCRUD extends GenericCRUD {
      * @param entityManager
      *            Entity manager to be used for the transactions.
      */
-    public FileCRUD(final EntityManager entityManager, final Logger logger) {
-        super(entityManager, logger, File.class);
+    public FileCRUD(final EntityManager entityManager) {
+        super(entityManager, File.class);
     }
 
     public File findFileById(UUID fileId) {

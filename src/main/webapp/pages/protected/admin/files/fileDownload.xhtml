@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>File Download</title>
+</h:head>
+<h:body>
+    <ui:composition template="/pages/protected/templates/master.xhtml">
+        <ui:define name="divMain">
+            <h:form>
+                <p:dataTable id="fileDownTable" value="#{fileBean.allFiles}" var="downloadFile" emptyMessage="#{bundle.noRecords}" reflow="true" paginator="true" rows="10"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="File name" />
+                        </f:facet>
+
+                        <h:outputText value="#{downloadFile.fileName}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Date created" />
+                        </f:facet>
+
+                        <h:outputText value="#{downloadFile.date}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Owner" />
+                        </f:facet>
+
+                        <h:outputText value="#{downloadFile.owner}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="File size" />
+                        </f:facet>
+
+                        <h:outputText value="#{downloadFile.fileSize}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Download" />
+                        </f:facet>
+
+                        <p:commandLink id="downloadLink" value="Download" ajax="false">
+                            <p:fileDownload value="#{fileDownload.fileDownloadListener(downloadFile.fileId)}" />
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

@@ -1,15 +1,12 @@
 package com.thesis.facade;
 
-import com.thesis.controller.AbstractBean;
 import com.thesis.crud.DAO;
 import com.thesis.crud.PersistException;
-import com.thesis.model.Account;
-import com.thesis.model.File;
-import com.thesis.model.Shared;
+import com.thesis.entities.Account;
+import com.thesis.entities.File;
+import com.thesis.entities.Shared;
 import com.thesis.util.JSFMessageUtil;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +17,6 @@ import java.util.UUID;
  */
 public class FileFacade extends JSFMessageUtil{
     public void upload(File file) throws PersistException {
-        //TODO: check for file name, if duplicate - rename
         DAO dao = new DAO();
         Account user = AccountFacade.getCurrentUser();
         dao.getFileCRUD().create(file);
@@ -33,30 +29,39 @@ public class FileFacade extends JSFMessageUtil{
         dao.getSharedCRUD().create(shared);
         dao.commit();
         System.out.println("File List: " + user.getFileList().size());
+
+        /*DAO dao = new DAO();
+        Account user = AccountFacade.getCurrentUser();
+        dao.getFileCRUD().create(file);
+        user.addFile(file);
+        dao.getAccountCRUD().update(user);
+        dao.commit();
+        System.out.println("File List: " + user.getFileList().size());*/
     }
 
     public void share(String userId, UUID fileId) throws PersistException {
-        final DAO dao = new DAO();
+        DAO dao = new DAO();
         UUID uuid1 = UUID.fromString(userId);
         Account user = dao.getAccountCRUD().read(uuid1);
         dao.closeTransaction();
-        final DAO dao2 = new DAO();
-        File file = (File) dao2.getFileCRUD().read(fileId);
-        dao2.closeTransaction();
-//        user.addFile(file);
-        final DAO dao3 = new DAO();
+        dao = new DAO();
+        File file = (File) dao.getFileCRUD().read(fileId);
+        dao.closeTransaction();
+        dao = new DAO();
         Shared shared = new Shared();
         shared.setAccountId(user.getAccId());
         shared.setFileId(file.getFileId());
-        dao3.closeTransaction();
+        dao.closeTransaction();
         if(user.getFileList().contains(file)) {
-            System.out.println("HAHA ni moa suzdam takoz veche ima!");
+            System.out.println("Duplicate entry, already shared!");
             sendErrorMessageToUser("File is already Shared!");
         }
         else{
-            final DAO dao4 = new DAO();
-            dao4.getSharedCRUD().create(shared);
-            dao4.commit();
+            dao = new DAO();
+//            user.addFile(file);
+            dao.getSharedCRUD().create(shared);
+//            dao.getAccountCRUD().update(user);
+            dao.commit();
             sendInfoMessageToUser("File is Shared");
         }
     }
@@ -66,6 +71,25 @@ public class FileFacade extends JSFMessageUtil{
         File file = dao.getFileCRUD().findFileById(fileId);
         dao.closeTransaction();
         return file;
+    }
+
+    public void removeFile(UUID fileId){
+        DAO dao = new DAO();
+        try {
+            dao.getSharedCRUD().delete(dao.getSharedCRUD().findSharedByFileId(fileId, AccountFacade.getCurrentUser().getAccId()));
+            dao.commit();
+            dao = new DAO();
+            System.out.println("File Id: " + fileId);
+            File toDelete = (File) dao.getFileCRUD().read(fileId);
+            System.out.println("File Name: " + toDelete.getFileName());
+            dao.getFileCRUD().delete(toDelete);
+            dao.commit();
+            System.out.println("Success!");
+        } catch (PersistException e) {
+            System.out.println("Nqkuv Persist Exception metna");
+        } catch (NoResultException ex) {
+            System.out.println("Nqkuv NoResultException metna");
+        }
     }
 
     public Set<File> listAllFilesByUser() {

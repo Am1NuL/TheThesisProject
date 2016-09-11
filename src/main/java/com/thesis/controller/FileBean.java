@@ -1,10 +1,7 @@
 package com.thesis.controller;
 
-import com.thesis.crud.PersistException;
 import com.thesis.facade.FileFacade;
-import com.thesis.model.Account;
-import com.thesis.model.File;
-import com.thesis.model.Shared;
+import com.thesis.entities.File;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -33,13 +30,17 @@ public class FileBean extends AbstractBean implements Serializable{
         return fileFacade;
     }
 
-    // TODO: Close dialog, Reload smth after using share?, Setting same file?
     public void shareFile(String userId) {
         try {
             System.out.println("Current File Id: " + getCurrentFileId() + "~~~~~~~~~~~~~~~~~~~~~~~~~~");
             getFileFacade().share(userId, getCurrentFileId());
         } catch (Exception e) {
         }
+    }
+
+    public void removeFile() {
+        System.out.println("CURRENT FILE ID" + currentFileId);
+        getFileFacade().removeFile(currentFileId);
     }
 
     public Set<File> getAllFilesByUser() {

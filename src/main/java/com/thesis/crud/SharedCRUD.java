@@ -1,8 +1,6 @@
 package com.thesis.crud;
 
-import com.thesis.model.File;
-import com.thesis.model.Shared;
-import org.slf4j.Logger;
+import com.thesis.entities.Shared;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,8 +20,8 @@ public class SharedCRUD extends GenericCRUD<Shared> {
      * @param entityManager
      *            Entity manager to be used for the transactions.
      */
-    public SharedCRUD(final EntityManager entityManager, final Logger logger) {
-        super(entityManager, logger, Shared.class);
+    public SharedCRUD(final EntityManager entityManager) {
+        super(entityManager, Shared.class);
     }
 
     public List<Shared> findAllFilesByUser(UUID accId) {
@@ -42,6 +40,17 @@ public class SharedCRUD extends GenericCRUD<Shared> {
         final Root<Shared> root = query.from(Shared.class);
 
         query.select(root).where(builder.equal(root.get("accountId"), uuid));
+
+        return getEntityManager().createQuery(query).getSingleResult();
+    }
+
+    public Shared findSharedByFileId(UUID fileId, UUID accId) {
+        final CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        final CriteriaQuery<Shared> query = builder.createQuery(Shared.class);
+        final Root<Shared> root = query.from(Shared.class);
+
+//        query.select(root).where(builder.equal(root.get("fileId"), fileId));
+        query.select(root).where(builder.and(builder.equal(root.get("fileId"), fileId), builder.equal(root.get("accountId"), accId)));
 
         return getEntityManager().createQuery(query).getSingleResult();
     }

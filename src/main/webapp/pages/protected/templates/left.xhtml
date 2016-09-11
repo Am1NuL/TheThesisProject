@@ -9,14 +9,22 @@
 <h:body>
 	<ui:composition>
 		<h:form>
-			<p:commandButton styleClass="menuButton" icon="ui-icon-arrowstop-1-e" rendered="#{userBean.admin}" action="/pages/protected/admin/adminIndex.xhtml" value="ADMIN" ajax="false" immediate="true" />
-			<br />
-			<p:commandButton styleClass="menuButton" icon="ui-icon-arrowstop-1-e" rendered="#{userBean.admin or userBean.defaultUser}" action="/pages/protected/defaultUser/defaultUserIndex.xhtml" value="USER" ajax="false" immediate="true" />
-			<br />
-			<p:commandButton styleClass="menuButton" icon="ui-icon-arrowstop-1-e" rendered="#{userBean.admin or userBean.defaultUser}" action="/pages/protected/defaultUser/files/fileUpload" value="UPLOAD" ajax="false" immediate="true" />
-			<br />
-			<p:commandButton styleClass="menuButton" icon="ui-icon-arrowstop-1-e" rendered="#{userBean.admin or userBean.defaultUser}" action="/pages/protected/defaultUser/files/fileDownload" value="DOWNLOAD" ajax="false" immediate="true" />
-
+			<p:menu style="width: 96%;">
+				<p:submenu label="Admin" rendered="#{userBean.admin}">
+					<p:menuitem value="Index" action="/pages/protected/admin/adminIndex.xhtml" ajax="false" immediate="true" icon="ui-icon-wrench" />
+					<p:menuitem value="View All Files" action="/pages/protected/admin/files/fileDownload.xhtml" ajax="false" immediate="true" icon="ui-icon-arrowrefresh-1-w"/>
+				</p:submenu>
+				<p:submenu label="Navigation" rendered="#{userBean.admin or userBean.defaultUser}">
+					<p:menuitem value="Home" action="/pages/protected/defaultUser/defaultUserIndex.xhtml" ajax="false" immediate="true" icon="ui-icon-home"/>
+					<p:menuitem value="Upload" action="/pages/protected/defaultUser/files/fileUpload.xhtml" ajax="false" immediate="true" icon="ui-icon-arrow-1-n"/>
+					<p:menuitem value="Download" action="/pages/protected/defaultUser/files/fileDownloadUser.xhtml" ajax="false" immediate="true" icon="ui-icon-arrow-1-s"/>
+					<p:menuitem value="Create Document" action="/pages/protected/defaultUser/editor/editor.xhtml" ajax="false" immediate="true" icon="ui-icon-document"/>
+				</p:submenu>
+				<p:submenu label="Preferences" rendered="#{userBean.admin or userBean.defaultUser}">
+					<p:menuitem value="Change Password" action="/pages/protected/defaultUser/changePass.xhtml" ajax="false" immediate="true" icon="ui-icon-wrench" />
+					<p:menuitem value="Change Email" action="/pages/protected/defaultUser/changeMail.xhtml" ajax="false" immediate="true" icon="ui-icon-arrowrefresh-1-w"/>
+				</p:submenu>
+			</p:menu>
 		</h:form>
 	</ui:composition>
 </h:body>

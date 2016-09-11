@@ -10,12 +10,18 @@
     <title>ASDASdasdasdas</title>
 </h:head>
 <h:body>
-    <p:outputLabel value="Max File Size = 3.8mb"/>
-    <h:form enctype="multipart/form-data" style="width: 500px">
-        <p:fileUpload fileUploadListener="#{fileUpload.fileUploadListener}" mode="advanced" dragDropSupport="true"
-                      update="messages" sizeLimit="4000000" auto="true"/>
+    <ui:composition template="/pages/protected/templates/master.xhtml">
+        <ui:define name="divMain">
+            <p:outputLabel value="Max File Size = 3.8mb"/>
+            <br/>
+            <p:outputLabel value=" Supported file extensions: txt, doc, docx"/>
+            <h:form enctype="multipart/form-data" style="width: 100%">
+                <p:fileUpload fileUploadListener="#{fileUpload.fileUploadListener}" mode="advanced" dragDropSupport="true" allowTypes="/(\.|\/)(doc|docx|txt)$/"
+                              update="messages" sizeLimit="4000000" auto="true"/>
 
-        <p:growl id="messages" showDetail="true" />
-    </h:form>
+                <p:growl id="messages" showDetail="true" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
 </h:body>
 </html>

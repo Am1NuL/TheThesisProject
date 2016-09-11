@@ -1,4 +1,4 @@
-package com.thesis.model;
+package com.thesis.entities;
 
 /**
  * Created by Alex on 18-Aug-16.

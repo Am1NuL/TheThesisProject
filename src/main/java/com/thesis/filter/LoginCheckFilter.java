@@ -1,6 +1,6 @@
 package com.thesis.filter;
 
-import com.thesis.model.Account;
+import com.thesis.entities.Account;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

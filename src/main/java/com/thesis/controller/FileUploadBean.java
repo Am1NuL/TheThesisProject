@@ -1,8 +1,9 @@
 package com.thesis.controller;
 
 import com.thesis.crud.PersistException;
+import com.thesis.facade.AccountFacade;
 import com.thesis.facade.FileFacade;
-import com.thesis.model.File;
+import com.thesis.entities.File;
 import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -38,13 +39,15 @@ public class FileUploadBean extends AbstractBean implements Serializable {
             file = new File();
             file.setFileName(filename);
             file.setData(uploadedFile.getContents());
+            file.setOwner(AccountFacade.getCurrentUser().getUsername());
 
             getFileFacade().upload(file);
 
             System.out.println("File Name: " + e.getFile().getFileName() + " File Size: " + e.getFile().getSize());
             displayInfoMessageToUser("File Uploaded Successfully!");
         }catch (Exception ex) {
-
+            System.out.println("Upload exception");
+            ex.printStackTrace();
         }
     }
 }

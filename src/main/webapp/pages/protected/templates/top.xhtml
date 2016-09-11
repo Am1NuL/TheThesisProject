@@ -10,8 +10,7 @@
      	<div id="topMessage">
      		<h1>
      			<h:form>
-					<!-- if user not logged no log out button -->
-		     		#{bundle.loginWelcomeMessage}: #{userBean.user.username} | <p:commandButton value="#{bundle.logOut}" action="#{userBean.logOut()}" ajax="false" style="font-size: 20px;" />
+		     		#{bundle.loginWelcomeMessage}: #{userBean.user.username} | <p:commandButton value="#{bundle.logout}" action="#{userBean.logOut()}" ajax="false" style="font-size: 20px;" />
      			</h:form>
      		</h1>
      	</div>

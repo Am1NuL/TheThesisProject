@@ -5,13 +5,12 @@
 <h:head>
 </h:head>
 <h:body>
-	<p>#{bundle.loginHello}</p>
+	<p>#{bundle.registerHello}</p>
 	<h:form>
 		<p:growl showDetail="false" life="3000" />
 		<p:panelGrid columns="2">
 			<p:outputLabel value="#{bundle.registerUserName}" />
 			<p:inputText value="#{registerBean.username}" label="Username" id="username" required="true">
-				<f:validateLength minimum="6" />
 				<p:watermark for="username" value="Username" />
 			</p:inputText>
 
@@ -39,6 +38,7 @@
 		</p:panelGrid>
 		<br/>
 		<p:commandButton action="#{registerBean.register}" value="Register" ajax="false" />
+		<p:commandButton value="Log in" action="/pages/public/login.xhtml" ajax="false" immediate="true"/>
 	</h:form>
 </h:body>
 </html>
